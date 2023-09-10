@@ -1,8 +1,8 @@
 # Decashine
 
-A simulator for all kinds of chance-based loot drop systems, such as the ones that literally define [a certain kind of P2W mobile grindfest](https://en.wikipedia.org/wiki/Gacha_game).
+A simulator for all kinds of chance-based loot drop systems from all kinds of games, such as the ones that literally define [a certain kind of P2W mobile grindfest](https://en.wikipedia.org/wiki/Gacha_game).
 
-It's like [RNG Pls](https://github.com/dorukayhan/rng-pls) but WAY faster and more capable and overengineered.
+It's like [RNG Pls](https://github.com/dorukayhan/rng-pls) but WAY more capable and overengineered and hopefully faster.
 
 ## To use
 
@@ -16,7 +16,7 @@ It's like [RNG Pls](https://github.com/dorukayhan/rng-pls) but WAY faster and mo
     java -jar /path/to/decashine.jar "$@"
 
 Then run `decashine -h`. You should be able to figure out the rest if you can read this.  
-See [FORMAT.md](FORMAT.md) for the explanation of the droptable and target formats.
+The system and target formats are explained in [SPEC.md](SPEC.md).
 
 ## To build
 
@@ -29,4 +29,7 @@ Then do whatever with decashine/build/libs/decashine.jar.
 
 ## License
 
-GNU AGPLv3 or later. Normal GPLv3-or-later rules apply, plus if you make a webapp based on this like everyone and their mother does with youtube-dl you must link to this repo somewhere on the page.
+GNU GPLv3 or later. As for the dependencies:
+
+- [Jakarta JSON Processing](https://github.com/jakartaee/jsonp-api) is dual licensed under [EPL 2.0](https://www.eclipse.org/legal/epl-2.0/) and GPLv2 with the [Classpath exception](https://www.gnu.org/software/classpath/license.html). Decashine isn't under EPL 2.0, so the latter applies.
+- [argparse4j](https://argparse4j.github.io/) is under MIT.

@@ -21,6 +21,7 @@ dependencies {
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
     implementation("net.sourceforge.argparse4j:argparse4j:0.9.0")
+    implementation("jakarta.json:jakarta.json-api:2.1.2")
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
