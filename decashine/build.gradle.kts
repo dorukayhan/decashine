@@ -36,6 +36,32 @@ application {
     mainClass.set("io.github.dorukayhan.decashine.App")
 }
 
+// WHY DO I HAVE TO SPECIFY ALL THIS 😭
+val sob = java.manifest {
+    attributes("Main-Class" to "io.github.dorukayhan.decashine.App")
+}
+
+tasks.jar {
+    manifest = java.manifest { from(sob) }
+}
+
+// fwcd.kotlin freaks out if I just type Jar for some reason
+tasks.register<org.gradle.api.tasks.bundling.Jar>("uberJar") {
+    archiveClassifier.set("uber")
+
+    from(sourceSets.main.get().output)
+
+    dependsOn(configurations.runtimeClasspath)
+    from({
+        configurations.runtimeClasspath.get().filter { it.name.endsWith("jar") }.map { zipTree(it).matching {
+            // skip module-info.class, poms in meta-inf, etc
+            exclude { it.name.contains("module-info") || it.path.contains("META-INF") }
+        }}
+    })
+
+    manifest = java.manifest { from(sob) }
+}
+
 tasks.named<Test>("test") {
     // Use JUnit Platform for unit tests.
     useJUnitPlatform()

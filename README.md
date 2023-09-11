@@ -22,10 +22,9 @@ The system and target formats are explained in [SPEC.md](SPEC.md).
 
     git clone git@github.com:dorukayhan/decashine.git
     cd decashine
-    ./gradlew assemble
-    # or ./gradlew build to run tests too
+    ./gradlew decashine:uberJar
 
-Then do whatever with decashine/build/libs/decashine.jar.
+Then do whatever with decashine/build/libs/decashine-uber.jar. `./gradlew assemble` and `./gradlew build` don't work because `assemble` is fatphobic.
 
 ## License
 
