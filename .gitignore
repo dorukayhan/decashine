@@ -8,3 +8,6 @@ build
 bin
 .classpath
 .project
+
+# testing may create temp files
+*.tmp

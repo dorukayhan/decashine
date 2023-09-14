@@ -22,6 +22,7 @@ dependencies {
 
     implementation("net.sourceforge.argparse4j:argparse4j:0.9.0")
     implementation("jakarta.json:jakarta.json-api:2.1.2")
+    implementation("org.eclipse.parsson:parsson:1.1.4") // why is the json parser split across two artifacts
 }
 
 // Apply a specific Java toolchain to ease working on different environments.

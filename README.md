@@ -30,5 +30,5 @@ Then do whatever with decashine/build/libs/decashine-uber.jar. `./gradlew assemb
 
 GNU GPLv3 or later. As for the dependencies:
 
-- [Jakarta JSON Processing](https://github.com/jakartaee/jsonp-api) is dual licensed under [EPL 2.0](https://www.eclipse.org/legal/epl-2.0/) and GPLv2 with the [Classpath exception](https://www.gnu.org/software/classpath/license.html). Decashine isn't under EPL 2.0, so the latter applies.
+- [The JSON](https://github.com/jakartaee/jsonp-api) [parser](https://projects.eclipse.org/projects/ee4j.parsson) is dual licensed under [EPL 2.0](https://www.eclipse.org/legal/epl-2.0/) and GPLv2 with the [Classpath exception](https://www.gnu.org/software/classpath/license.html). Decashine isn't under EPL 2.0, so the latter applies.
 - [argparse4j](https://argparse4j.github.io/) is under MIT.

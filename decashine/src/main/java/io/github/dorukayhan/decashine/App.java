@@ -17,16 +17,12 @@
  */
 package io.github.dorukayhan.decashine;
 
-import net.sourceforge.argparse4j.ArgumentParsers;
-import net.sourceforge.argparse4j.inf.ArgumentParser;
-
 public class App {
-    public static void main(String[] args) {
-        ArgumentParser parser = ArgumentParsers.newFor("decashine").build()
-            .defaultHelp(true)
-            .description("Simulate all kinds of chance-based loot drop systems (e.g. gacha, every MMORPG ever)");
-        // TODO add options and stuff to implement later
-        // should just model it after rng-pls idk
-        // and make sure to put the actual implementation in another class to make adding a gui later on easier
+    public static void main(String[] args)
+        throws net.sourceforge.argparse4j.inf.ArgumentParserException {
+        if(args.length == 0)
+            new CLI().launch(new String[]{"-h"}); // TODO insert GUI here
+        else
+            new CLI().launch(args);
     }
 }
