@@ -1,4 +1,4 @@
-# Decashine Specification 0.1.0
+# Decashine Specification 0.2.0
 
 This spec defines Decashine's system and target formats and how they're (supposed to be) evaluated. It can be used to port Decashine to other languages or build tools to work with Decashine (e.g. a system generator).
 
@@ -7,6 +7,8 @@ ALL strings are case-sensitive.
 Since both formats are JSON-based, the spec often uses JSONPath to refer to specific values. See https://goessner.net/articles/JsonPath/ for details.
 
 The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",  "MAY", and "OPTIONAL" are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119).
+
+The [system](decashine/src/main/resources/system.schema.json) and [target](decashine/src/main/resources/target.schema.json) schemas MUST agree with this spec. If they disagree, [report it ASAP](https://github.com/dorukayhan/decashine/issues/new) and follow the schemas until a fix arrives.
 
 ## 1. System
 
@@ -31,7 +33,7 @@ The root object MAY contain other values; they MUST be ignored when simulating d
 
 A drop table (or just "table") is a collection of items that may be dropped when the table gets triggered by a pool. Since `$.tables` is an object, every table is forced to have a unique name that pools use to reference it.
 
-Every table is an object that contains an array named `rewards` and, if applicable, another object named `pity`.
+Every table is an object that contains an array named `rewards` and, if applicable, an object named `pity`.
 
 #### 1.2.1. `rewards`
 
@@ -39,10 +41,10 @@ Every table is an object that contains an array named `rewards` and, if applicab
 - an OPTIONAL boolean named `isPool`. Assumed `false` if absent
 - a string named `name`. MUST be the name of a pool in `$.pools` if `isPool` is `true`; can be any non-empty string otherwise
 - an integer named `weight`. MUST be greater than zero
-- an OPTIONAL integer named `quantity`. MUST be 1 or greater if present, assumed 1 if absent, and MUST be 1 or absent if `isPool` is `true`
+- an OPTIONAL integer named `quantity`. MUST be 1 or greater if present, assumed 1 if absent, and SHOULD be 1 or absent if `isPool` is `true` (Decashine just ignores `quantity` for nested pools)
 - an OPTIONAL array of strings named `pity`
 
-`name`s can repeat in a table, but they SHOULD NOT, unless different quantities are involved. Decashine warns the user of all items with duplicate names and quantities.
+`name`s can repeat in a table, but they SHOULD NOT, unless different quantities are involved.
 
 #### 1.2.2. `pity`
 
@@ -62,10 +64,10 @@ Some loot drop systems, most notably the "gacha" parts of many gacha games, have
 
 This way of doing pity has the following caveats:
 
-- `.det` MUST NOT be used as a pity class.
+- `.det` SHOULD NOT be used as a pity class.
 - Item weights are kept as-is when pity kicks in instead of being normalized in any way. Only the table's total weight changes.
 - When multiple pity classes reach their target, they all take effect. In the example above, if `pityClass1`'s pity coincides with `pityClass2`'s pity, the dropped item would be from `pityClass1` ∩ `pityClass2`.
-    - This means there MUST NOT be mutually exclusive pity classes. If two mutually exclusive pities were to activate at once, the table wouldn't have anything to drop.
+    - This means there MUST NOT be mutually exclusive pity classes - if two mutually exclusive pities were to activate at once, the table wouldn't have anything to drop. To make sure of this, just have one or more items that are in every pity class.
 
 ### 1.3. Pools
 
@@ -82,7 +84,7 @@ Every pool is an object containing:
 
 `chooser` may contain the following (and only the following) space-separated tokens:
 
-- any signed 64-bit integer
+- any signed integer
 - the variable `ctr`, which starts from 0 and counts how many times the pool was triggered during a "run" (see [3. Evaluation](#3-evaluation))
 - `+ - * / % ^` for the four functions (`/` is integer division), modulo and exponentiation (`2 3 ^` would be 2<sup>3</sup>)
 - `min` and `max`, as in `min(a, b)` and `max(a, b)`
@@ -133,9 +135,9 @@ Instead of containing all the above stuff, a drop table or pool may be made a cl
 
 `notMain` has the same `tables` and `chooser` as `main`, but an independent `ctr`. Similarly, a table that's a `copyOf` another table would have the same items and pity mechanics, but independent pity timers.
 
-`copyOf`, if it exists, MUST refer to an existing table or pool (duh).
+`copyOf`, if it exists, MUST refer to an existing table or pool (duh) that's not a `copyOf` another table of pool.
 
-A table or pool that's a `copyOf` another table or pool SHOULD NOT have other values. Decashine just ignores them in favor of `copyOf` and gives a warning.
+A table or pool that's a `copyOf` another table or pool SHOULD NOT have other values. Decashine just ignores them in favor of `copyOf`.
 
 ## 2. Target
 

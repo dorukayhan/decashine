@@ -1,0 +1,9 @@
+{
+    "$id": "https://dorukayhan.github.io/decashine/target.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+
+    "type": "object",
+    "additionalProperties": {
+        "type": "integer"
+    }
+}

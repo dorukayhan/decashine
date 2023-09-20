@@ -1,0 +1,99 @@
+{
+    "$id": "https://dorukayhan.github.io/decashine/system.schema.json",
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+
+    "type": "object",
+    "properties": {
+        "tables": {
+            "type": "object",
+            "minProperties": 1,
+            "additionalProperties": {
+                "type": "object",
+                "anyOf": [
+                    {
+                        "properties": {
+                            "rewards": {
+                                "type": "array",
+                                "items": { "$ref": "#/$defs/reward" },
+                                "minItems": 1
+                            },
+                            "pity": {
+                                "type": "object",
+                                "additionalProperties": {
+                                    "type": "integer"
+                                }
+                            }
+                        },
+                        "required": ["rewards"]
+                    },
+                    {
+                        "properties": {
+                            "copyOf": { "type": "string" }
+                        },
+                        "required": ["copyOf"]
+                    }
+                ]
+            }
+        },
+        "pools": {
+            "type": "object",
+            "properties": { "main": { "$ref": "#/$defs/pool" } },
+            "additionalProperties": { "$ref": "#/$defs/pool" },
+            "required": ["main"]
+        }
+    },
+    "required": ["tables", "pools"],
+
+    "$defs": {
+        "pool": {
+            "type": "object",
+            "anyOf": [
+                {
+                    "properties": {
+                        "tables": {
+                            "type": "array",
+                            "items": { "type": "string" }
+                        },
+                        "chooser": {
+                            "type": "string",
+                            "pattern": "^(-?[0-9]+|ctr|[+\\-*/%^]|min|max|swap)( (-?[0-9]+|ctr|[+\\-*/%^]|min|max|swap))*$",
+                            "$comment": "having the second group allows the 'space-separated tokens' thing. idfk just put the pattern in regexr"
+                        }
+                    },
+                    "required": ["tables", "chooser"]
+                },
+                {
+                    "properties": {
+                        "copyOf": { "type": "string" }
+                    },
+                    "required": ["copyOf"]
+                }
+            ]
+        },
+        "reward": {
+            "type": "object",
+            "properties": {
+                "isPool": {
+                    "type": "boolean"
+                },
+                "name": {
+                    "type": "string",
+                    "minLength": 1
+                },
+                "weight": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "quantity": {
+                    "type": "integer",
+                    "minimum": 1
+                },
+                "pity": {
+                    "type": "array",
+                    "items": { "type": "string" }
+                }
+            },
+            "required": ["name", "weight"]
+        }
+    }
+}
